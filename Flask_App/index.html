@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Al Jazeera Summarizer</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #222;
+            color: white;
+        }
+        .container {
+            margin: 50px auto;
+            max-width: 800px;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .img-fluid {
+            max-width: 100%;
+            margin-top: 20px;
+        }
+        .image-text {
+            color: #999;
+            font-size: 18px;
+        }
+        .all-sentences {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        .small-link {
+            font-size: 14px;
+            color: blue;
+        }
+        .btn-size-increase {
+            transition: transform 0.2s ease;
+        }
+        .btn-size-increase:hover {
+            transform: scale(1.1);
+            background-color: #999;
+        }
+        .btn-contrast {
+            color: white;
+            background-color: #999;
+            padding: 18px 36px;
+            font-size: 28px;
+            border: none;
+            border-radius: 5px;
+        }
+        .space-below-button {
+            margin-bottom: 20px;
+        }
+        .spinner {
+            margin: 0 auto;
+            width: 2rem;
+            height: 2rem;
+            display: block;
+            border: 0.25em solid currentColor;
+            border-right-color: transparent;
+            border-radius: 50%;
+            animation: spinner-border 0.75s linear infinite;
+        }
+        @keyframes spinner-border {
+            to { transform: rotate(360deg); }
+        }
+        .spinner-hide {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container text-center">
+        <form method="POST" action="/get_news" class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary btn-size-increase btn-contrast">Get Summarized News</button>
+        </form>
+        <div class="space-below-button"></div>
+        <div class="spinner spinner-border spinner-hide style='color: #999'"></div>
+        <div class="space-below-button"></div>
+        {% for container in containers %}
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1>{{ container.text }}</h1>
+            </div>
+            <div class="col-md-12 text-center">
+                <h5><a href="{{ container.link }}" class="small-link">{{ container.link }}</a></h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <img src="{{ container.image_url }}" class="img-fluid">
+                <p class="image-text">{{ container.image_text }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="all-sentences">{{ container.all_sentences }}</p>
+            </div>
+        </div>
+        <hr>
+        {% endfor %}
+    </div>
+    <script>
+        document.querySelector('form').addEventListener('submit', function () {
+            document.querySelector('.spinner').classList.remove('spinner-hide');
+            setTimeout(function () {
+                document.querySelector('.spinner').classList.add('spinner-hide');
+            }, 35000);
+        });
+    </script>
+</body>
+</html>
